@@ -1,0 +1,17 @@
+.scroll-pane > .viewport {
+   -fx-background-color: white;
+}
+
+
+/* 
+.progress-bar > .track {
+  -fx-box-border: black;
+  -fx-control-inner-background: red;
+}
+
+.progress-bar .bar { 
+	-fx-box-border: black;
+    -fx-padding: 1px; 
+    -fx-background-insets: 0; 
+}
+*/
