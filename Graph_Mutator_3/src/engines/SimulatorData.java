@@ -104,7 +104,7 @@ public class SimulatorData {
 				resetScores();
 				playGame();				
 				model.captureStatistics();
-//				reportStatus();
+				reportStatus();
 
 					// check distance
 				if(model.getDistance() <= 0){
