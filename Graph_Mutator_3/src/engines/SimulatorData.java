@@ -20,8 +20,8 @@ import graphenvironment.Model;
 
 public class SimulatorData {
 
-	static int numNewPlayersNeeded = 200;
-	static int numModelsToBuild = 200;
+	static int numNewPlayersNeeded = 1000;
+	static int numModelsToBuild = 1000;
 	static int modelCounter = 0;
 	int roundsPlayed = 0;
 	private static int playerNameSeed = 0;
@@ -57,7 +57,8 @@ public class SimulatorData {
 		outputEngine = new OutputEngine("", "mutator_1", headers);
 		
 		//p_edge_CC = ((double)(((100 - modelCounter)+9)/10*10))/100;
-		p_edge_CC = ((double)(((200 - modelCounter)+9)/10*10))/200;
+		//p_edge_CC = ((double)(((200 - modelCounter)+9)/10*10))/200;
+		p_edge_CC = (double)(((1000-modelCounter)+9)/10*10)/10000;
 		//p_edge_CC = 0.9;
 		//p_edge_CD = ((double)(10-(modelCounter%10)))/10;
 		//p_edge_CD = ((double)(((200 - modelCounter)+9)/10*10))/200;
@@ -78,7 +79,7 @@ public class SimulatorData {
 					resetScores();
 					playGame();
 					model.captureStatistics();
-					reportStatus();
+					//reportStatus();
 					
 					 System.out.println("Model: "+modelCounter+ " --> #Cooperators: " + model.getNumCooperators() +
 							 " #Defector: " + model.getNumDefectors() + " ----- #CC: " + model.getNumCCEdges()+" #DD " +
@@ -104,7 +105,7 @@ public class SimulatorData {
 				resetScores();
 				playGame();				
 				model.captureStatistics();
-				reportStatus();
+				//reportStatus();
 
 					// check distance
 				if(model.getDistance() <= 0){
@@ -128,7 +129,7 @@ public class SimulatorData {
 					resetScores();
 					playGame();
 					model.captureStatistics();
-					//reportStatus();
+					reportStatus();
 					
 				}
 
@@ -143,9 +144,10 @@ public class SimulatorData {
 				// ********************************************increasing number
 				// of players per model
 				// TODO: reset number of players required for next model
-				numNewPlayersNeeded = 200;
+				numNewPlayersNeeded = 1000;
 				//p_edge_CC = ((double)(((100 - modelCounter)+9)/10*10))/100;
-				p_edge_CC = ((double)(((200 - modelCounter)+9)/10*10))/200;
+				//p_edge_CC = ((double)(((200 - modelCounter)+9)/10*10))/200;
+				p_edge_CC = (double)(((1000-modelCounter)+9)/10*10)/10000;
 				//p_edge_CC = 0.9;
 				//p_edge_CD = ((double)(10-(modelCounter%10)))/10;
 				//p_edge_CD = ((double)(((200 - modelCounter)+9)/10*10))/200;
@@ -208,8 +210,8 @@ public class SimulatorData {
 		// Model model = graph.getModel();
 		// beginUpdate();
 		Player player = null;
-		//double coinFlip = Math.random() * 2;
-		double coinFlip = numNewPlayersNeeded%2;
+		double coinFlip = Math.random() * 2;
+		//double coinFlip = numNewPlayersNeeded%2;
 		//double coinFlip = numNewPlayersNeeded-modelCounter;
 		//if ((int) coinFlip < 0) {
 		if ((int) coinFlip == 0) {

@@ -21,9 +21,9 @@ import graphenvironment.Model;
  *     has been reached, as the p_edge is varied
  *
  */
-public class Simulator_RatioComparator {
+public class Simulator_RatioComparator1000 {
 
-	static int numNewPlayersNeeded = 100;
+	static int numNewPlayersNeeded = 1000;
 	static int numModelsToBuild = 1000;
 	static int modelCounter = 0;
 
@@ -44,7 +44,7 @@ public class Simulator_RatioComparator {
 
 	static Model model = new Model();
 
-	public Simulator_RatioComparator() {
+	public Simulator_RatioComparator1000() {
 
 	}
 
@@ -53,7 +53,7 @@ public class Simulator_RatioComparator {
 		outputEngine = new OutputEngine("", "edge_counter", headers);
 
 		//p_edge = (double) (((1000 - modelCounter) + 99) / 100 * 100) / 1000;
-		p_edge = (double)(((1000-modelCounter)+9)/10*10)/1000;
+		p_edge = (double)(((1000-modelCounter)+9)/10*10)/10000;
 
 		while (!simulationComplete) {
 
@@ -129,11 +129,11 @@ public class Simulator_RatioComparator {
 				// reset newPlayerSpawned
 				newPlayerSpawned = true;
 				// reset number of players required for next model
-				numNewPlayersNeeded = 100;
+				numNewPlayersNeeded = 1000;
 				// p_edge is determined from the model counter and
 				// reduces every 100 models built by 0.1
 				//p_edge = (double) (((1000 - modelCounter) + 99) / 100 * 100) / 1000;
-				p_edge = (double)(((1000-modelCounter)+9)/10*10)/1000;
+				p_edge = (double)(((1000-modelCounter)+9)/10*10)/10000;
 				playerNameSeed = 0;
 				numMutationsCounter = 0;
 				model = new Model();
@@ -260,5 +260,6 @@ public class Simulator_RatioComparator {
 	}
 
 }
+
 
 
