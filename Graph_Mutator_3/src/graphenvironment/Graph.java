@@ -124,7 +124,7 @@ public class Graph {
         		//--numDDEdges;
         	} else {
         		// the other player must be a cooperator
-        		model.derementNumCDEdges();
+        		model.decrementNumCDEdges();
         		//--numCDEdges;
         	} 	
 			otherplayer.getPlayersEdges().remove(playerToMutate);

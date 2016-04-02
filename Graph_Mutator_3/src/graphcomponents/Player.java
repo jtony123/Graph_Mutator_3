@@ -58,6 +58,13 @@ public class Player extends Pane {
 	public void addToScore(int score) {
 		this.score += score;
 	}
+	
+	/**
+	 * @param gameCost
+	 */
+	public void decrementPlayerScore(int gameCost) {
+		this.score -= gameCost;		
+	}
 
 	public void addPlayerChild(Player player) {
 		children.add(player);
@@ -93,6 +100,8 @@ public class Player extends Pane {
 	public String getPlayerId() {
 		return playerId;
 	}
+
+
 
 
 }

@@ -230,7 +230,7 @@ public class Simulator_RatioComparator1000 {
 				// --numDDEdges;
 			} else {
 				// the other player must be a cooperator
-				model.derementNumCDEdges();
+				model.decrementNumCDEdges();
 				// --numCDEdges;
 			}
 			otherplayer.getPlayersEdges().remove(playerToMutate);

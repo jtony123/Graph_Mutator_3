@@ -67,6 +67,10 @@ public class Model {
 		++numCooperators;
 	}
 	
+	public void decrementNumCooperators(){
+		--numCooperators;
+	}
+	
 	public double getPercentageCooperators(){
 		if(numCooperators + numDefectors != 0){
 			return (((double)numCooperators)/(numCooperators + numDefectors))*100;
@@ -301,6 +305,10 @@ public class Model {
     public void decrementNumDDEdges(){
     	--numDDEdges;
     }
+    
+    public void decrementNumCCEdges(){
+    	--numCCEdges;
+    }
 
     /**
 	 * @return the numCCEdges
@@ -323,7 +331,7 @@ public class Model {
 		return numCDEdges;
 	}
 	
-	public void derementNumCDEdges(){
+	public void decrementNumCDEdges(){
 		--numCDEdges;
 	}
 
