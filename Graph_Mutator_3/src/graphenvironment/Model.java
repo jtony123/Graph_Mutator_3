@@ -9,9 +9,11 @@ package graphenvironment;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import graphcomponents.*;
 
@@ -32,6 +34,8 @@ public class Model {
     Map<Player,List<Player>> edgeMap;
     
     PriorityQueue<Player> playerQueue;
+    Queue<Player> spawnedPlayers;
+    static Queue<Player> deadPlayers;
     
 	int numCooperators = 0;
 	int numDefectors = 0;
@@ -50,6 +54,8 @@ public class Model {
 
          graphParent = new Player( "_ROOT_");
          playerQueue = new PriorityQueue<Player>(10, edgeComparator);
+         spawnedPlayers = new LinkedList<Player>();
+         deadPlayers = new LinkedList<Player>();
 
          // clear model, create lists
          clear();
@@ -57,6 +63,23 @@ public class Model {
     
     
     /**
+	 * @return the spawnedPlayers
+	 */
+	public Queue<Player> getSpawnedPlayers() {
+		return spawnedPlayers;
+	}
+
+
+	/**
+	 * @return the deadPlayers
+	 */
+	public Queue<Player> getDeadPlayers() {
+		return deadPlayers;
+	}
+
+
+
+	/**
 	 * @return the numCooperators
 	 */
 	public int getNumCooperators() {
@@ -421,6 +444,35 @@ public class Model {
 	
 	public int getDistance(){
 		return coopScore - defScore;
+	}
+		
+	
+	public double calculateAverageCooperatorsLifespan(){
+		
+		double avgC = 0.0;
+		int cCount = 0;
+		
+		for(Player player : getDeadPlayers()){
+			if (player instanceof Cooperator) {
+				avgC += player.getAge();
+				++cCount;
+			} 
+		}		
+		return avgC/cCount;
+	}
+	
+public double calculateAverageDefectorsLifespan(){
+		
+		double avgD = 0.0;
+		int dCount = 0;
+		
+		for(Player player : getDeadPlayers()){
+			if (player instanceof Defector) {				
+				avgD += player.getAge();
+				++dCount;
+			}
+		}
+		return avgD/dCount;
 	}
     
 }

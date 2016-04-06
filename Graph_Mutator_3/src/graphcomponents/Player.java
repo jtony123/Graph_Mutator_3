@@ -19,6 +19,7 @@ public class Player extends Pane {
 	String playerId;
 	
 	int score = 0;
+	int age = 0;
 	Node view;
 	List<Player> children = new ArrayList<>();
 	List<Player> parents = new ArrayList<>();
@@ -59,6 +60,13 @@ public class Player extends Pane {
 		this.score += score;
 	}
 	
+	public void incrementAge(){
+		++this.age;
+	}
+	
+	public int getAge(){
+		return this.age;
+	}
 	/**
 	 * @param gameCost
 	 */

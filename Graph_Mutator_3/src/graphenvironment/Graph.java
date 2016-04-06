@@ -19,6 +19,7 @@ public class Graph {
     private Group canvas;
 
     private ZoomableScrollPane scrollPane;
+    MouseGestures mouseGestures;
 
     PlayerLayer playerLayer;
 
@@ -28,6 +29,7 @@ public class Graph {
         canvas = new Group();
         playerLayer = new PlayerLayer();
         canvas.getChildren().add(playerLayer);
+        mouseGestures = new MouseGestures(this);
         scrollPane = new ZoomableScrollPane(canvas);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
@@ -155,6 +157,13 @@ public class Graph {
         getPlayerLayer().getChildren().removeAll(model.getRemovedPlayers());
         getPlayerLayer().getChildren().removeAll(model.getRemovedEdges());
 
+     // enable dragging of players
+        for (Player player : model.getAddedPlayers()) {
+        	if(player != null){
+            mouseGestures.makeDraggable(player);
+        	}
+        }
+        
         // every player must have a parent, if it doesn't, then the graphParent is
         // the parent
         getModel().attachOrphansToGraphParent(model.getAddedPlayers());

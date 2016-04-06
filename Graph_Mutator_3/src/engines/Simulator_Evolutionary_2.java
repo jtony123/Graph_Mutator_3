@@ -19,16 +19,15 @@ import graphenvironment.Model;
  *
  */
 
-public class Simulator_Evolutionary {
+public class Simulator_Evolutionary_2 {
 
 	static int numNewPlayersNeeded = 100;
-	static int numModelsToBuild = 100;
-	static int numEvolutionsToRun = 10;
+	static int numModelsToBuild = 99;
+	static int numEvolutionsToRun = 1000;
 	static int modelCounter = 0;
 	static int evolutionCounter = 0;
 	int roundsPlayed = 0;
 	private static int playerNameSeed = 0;
-	private static int numMutationsCounter = 0;
 
 	private static boolean newPlayerSpawned = true;
 	private static boolean modelComplete = false;
@@ -44,16 +43,19 @@ public class Simulator_Evolutionary {
 
 	static PrisonersDilemmaGame pdGame = new PrisonersDilemmaGame();
 	static OutputEngine outputEngine;
+	static OutputEngine outputEngine2;
 
-	static String[] headers = { "model", "#players", "p_edge_CC", "p_edge_CD", "AvgDeg", "#Coops", "#Defs", "#CC",
+	static String[] headers = { "model", "#evol", "#players", "p_edge_CC", "p_edge_CD", "AvgDeg", "#Coops", "#Defs", "#CC",
 			"#DD", "#CD", "Dist" };
+	
+	static String[] headers1 = { "model", "Average C lifespan","Average D lifespan" };
 
 	static Model model = new Model();
 
 	/**
 	 * 
 	 */
-	public Simulator_Evolutionary() {
+	public Simulator_Evolutionary_2() {
 
 	}
 
@@ -63,6 +65,7 @@ public class Simulator_Evolutionary {
 	public static void main(String[] args) {
 
 		outputEngine = new OutputEngine("", "mutator_1", headers);
+		outputEngine2 = new OutputEngine("", "lives_1", headers1);
 
 		//p_edge_CC = (double) (((1000 - modelCounter) + 9) / 10 * 10) / 10000;
 		p_edge_CC = 0.1;
@@ -89,6 +92,7 @@ public class Simulator_Evolutionary {
 				+ " #DD " + model.getNumDDEdges() + " #CD " + model.getNumCDEdges() + " : Distance = "
 				+ model.getDistance() + " numPlayers " + model.getNumPlayers());
 				reportStatus();
+							
 
 				// run the evolution
 				if (!evolutionComplete) {
@@ -104,6 +108,12 @@ public class Simulator_Evolutionary {
 						evolutionComplete = true;
 						modelComplete = false;
 						newPlayerSpawned = false;						
+					}
+					
+					if(model.getAllPlayers().isEmpty() || model.getAllPlayers().size() > 2000){
+						evolutionComplete = true;
+						modelComplete = false;
+						newPlayerSpawned = false;
 					}
 
 				}
@@ -121,7 +131,9 @@ public class Simulator_Evolutionary {
 				System.out.println();
 				System.out.println();
 				reportStatus();
-				// blamk line in output
+				reportStatus1();
+				
+				// blank line in output
 				outputEngine.saveStat(new Object[] {"",""});
 				
 				// build the next model
@@ -145,7 +157,6 @@ public class Simulator_Evolutionary {
 				System.out.println("pedgeCC = "+p_edge_CC + " pedgeCD = " + p_edge_CD);
 
 				playerNameSeed = 0;
-				numMutationsCounter = 0;
 				model = new Model();
 
 			} else {
@@ -162,10 +173,12 @@ public class Simulator_Evolutionary {
 	 */
 
 	private static void evolveModel() {
-		
+		// int numNewPlayersNeeded = 0;
+
 		// decrement scores
 		for (Player player : model.getAllPlayers()) {
 			player.decrementPlayerScore(gameCost*evolutionCounter);
+			player.incrementAge();
 		}
 
 		// check what players can spawn and which are eliminated
@@ -176,6 +189,8 @@ public class Simulator_Evolutionary {
 
 			// which players can spawn
 			if (player.getScore() > (spawnThreshold*evolutionCounter)) {
+				//model.getSpawnedPlayers().add(player);
+				//System.out.println("Player "+player.getid );
 				player.setScore(10);
 				++numNewPlayersNeeded;
 				newPlayerSpawned = true;
@@ -188,6 +203,7 @@ public class Simulator_Evolutionary {
 				} else {
 					model.decrementNumDefectors();
 				}
+				model.getDeadPlayers().add(player);
 				removedPlayers.add(player);
 
 				for (Edge edge : model.getAllEdges()) {
@@ -212,15 +228,27 @@ public class Simulator_Evolutionary {
 
 		model.getAllEdges().removeAll(removedEdges);
 		model.getAllPlayers().removeAll(removedPlayers);
+		// System.gc();
 	}
 
 	private static void reportStatus() {
 
-		outputEngine.saveStat(new Object[] { modelCounter, model.getNumPlayers(), p_edge_CC, p_edge_CD,
+		outputEngine.saveStat(new Object[] { modelCounter, evolutionCounter, model.getNumPlayers(), p_edge_CC, p_edge_CD,
 				model.getDegree(), model.getNumCooperators(), model.getNumDefectors(), model.getNumCCEdges(),
 				model.getNumDDEdges(), model.getNumCDEdges(), model.getDistance() });
 
 	}
+	
+	private static void reportStatus1() {
+				
+		// get the list of players as they died
+		//{ "model", "Average C lifespan","Average D lifespan" };
+		outputEngine2.saveStat(new Object[] { modelCounter, model.calculateAverageCooperatorsLifespan(), model.calculateAverageDefectorsLifespan()});
+		
+
+	}
+	
+
 
 	public static void resetScores() {
 		for (Player player : model.getAllPlayers()) {
@@ -327,3 +355,4 @@ public class Simulator_Evolutionary {
 	}
 
 }
+
