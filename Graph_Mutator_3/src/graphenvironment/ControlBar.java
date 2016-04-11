@@ -37,9 +37,11 @@ public class ControlBar {
 	final TextField directoryPath = new TextField();
 	final TextField numModelsRequired = new TextField();
 	final TextField numPlayersPerModel = new TextField();
-	final TextField available_1 = new TextField();
+	final TextField spawnThreshold = new TextField();
+	final TextField cost = new TextField();
 	
-	final TextField p_edge = new TextField();
+	final TextField p_edge_CC = new TextField();
+	final TextField p_edge_CD = new TextField();
 	
 	Button startButton = new Button("Start");
 	Button pauseButton = new Button("Pause");
@@ -72,8 +74,8 @@ public class ControlBar {
     final XYChart.Series<Number,String> cds = new XYChart.Series<Number,String>();
     final XYChart.Series<Number,String> dds = new XYChart.Series<Number,String>();
     
-	Label nMutations = new Label("Mutations Count");
-	TextField numMutations = new TextField();
+	Label nEvolutions = new Label("Evolutions Count");
+	TextField numEvolutions = new TextField();
     
 	
 	
@@ -124,20 +126,32 @@ public class ControlBar {
 	    numPlayersPerModel.setPrefWidth(60);
 	    grid.getChildren().add(numPlayersPerModel);
 	    
-	    available_1.setPromptText("available_1");
-	    available_1.setPrefColumnCount(3);
-	    available_1.getText();
-	    GridPane.setConstraints(available_1, 0, 3, 4, 1);
-	    available_1.setPrefWidth(60);
-	    //grid.getChildren().add(available_1);
+	    spawnThreshold.setPromptText("spawn threshold");
+	    spawnThreshold.setPrefColumnCount(3);
+	    spawnThreshold.getText();
+	    GridPane.setConstraints(spawnThreshold, 0, 3, 2, 1);
+	    spawnThreshold.setPrefWidth(60);
+	    grid.getChildren().add(spawnThreshold);
 	    
+	    cost.setPromptText("cost each round");
+	    cost.setPrefColumnCount(3);
+	    cost.getText();
+	    GridPane.setConstraints(cost, 2, 3, 2, 1);
+	    cost.setPrefWidth(60);
+	    grid.getChildren().add(cost);    
 	   
 	    
-	    p_edge.setPromptText("p(edge)");
-	    p_edge.setPrefColumnCount(3);
-	    p_edge.setPrefWidth(60);
-	    GridPane.setConstraints(p_edge, 0, 4, 4, 1);
-	    grid.getChildren().add(p_edge);
+	    p_edge_CC.setPromptText("p(edge_CC)");
+	    p_edge_CC.setPrefColumnCount(3);
+	    p_edge_CC.setPrefWidth(60);
+	    GridPane.setConstraints(p_edge_CC, 0, 4, 2, 1);
+	    grid.getChildren().add(p_edge_CC);
+	    
+	    p_edge_CD.setPromptText("p(edge_CD)");
+	    p_edge_CD.setPrefColumnCount(3);
+	    p_edge_CD.setPrefWidth(60);
+	    GridPane.setConstraints(p_edge_CD, 2, 4, 2, 1);
+	    grid.getChildren().add(p_edge_CD);
 	    
 	    //Defining the control buttons
 	    
@@ -180,7 +194,6 @@ public class ControlBar {
 	    
 		GridPane.setConstraints(modelProgress, 0, 10, 4, 1);
 		modelProgress.setMaxWidth(Double.MAX_VALUE);
-//		modelProgress.getStyleClass().add("track");
 		modelProgress.getStyleClass().add("bar");
 		grid.getChildren().add(modelProgress);
 		for (Node n: modelProgress.lookupAll(".progress-bar.bar")) n.setStyle("-fx-accent: lightgreen;");
@@ -226,13 +239,13 @@ public class ControlBar {
 		for (Node n: sbc.lookupAll(".default-color4.chart-bar")) n.setStyle("-fx-bar-fill: red;");
 		
 		
-		GridPane.setConstraints(nMutations, 0, 14, 2, 1);
-		nMutations.setMaxWidth(Double.MAX_VALUE);
-		grid.getChildren().add(nMutations);
+		GridPane.setConstraints(nEvolutions, 0, 14, 2, 1);
+		nEvolutions.setMaxWidth(Double.MAX_VALUE);
+		grid.getChildren().add(nEvolutions);
 		
-		GridPane.setConstraints(numMutations, 2, 14, 2, 1);
-		numMutations.setMaxWidth(Double.MAX_VALUE);
-		grid.getChildren().add(numMutations);
+		GridPane.setConstraints(numEvolutions, 2, 14, 2, 1);
+		numEvolutions.setMaxWidth(Double.MAX_VALUE);
+		grid.getChildren().add(numEvolutions);
 	}
 	
 	public void setRatios(double coop, double def, double ccEdges, double ddEdges, double cdEdges){
@@ -287,8 +300,8 @@ public class ControlBar {
 		numDefs.setText(String.valueOf(numD));
 	}
 	
-	public void setNumMutations(int nMutations){
-		numMutations.setText(String.valueOf(nMutations));
+	public void setNumEvolutions(int nEvolutions){
+		numEvolutions.setText(String.valueOf(nEvolutions));
 	}
 	
 	
@@ -342,19 +355,53 @@ public class ControlBar {
 	}
 	
 	/**
+	 * @return the spawnThreshold
+	 */
+	public int getSpawnThreshold() {
+		if(!spawnThreshold.getText().equalsIgnoreCase("")){
+			return Integer.parseInt(spawnThreshold.getText());
+		}
+		return 15;
+	}
+
+	/**
+	 * @return the cost
+	 */
+	public int getCost() {
+		if(!cost.getText().equalsIgnoreCase("")){
+			return Integer.parseInt(cost.getText());
+		}
+		return 3;
+	}
+
+	/**
 	 * @return the p_edge
 	 */
-	public double getP_edge() {
-		if(!p_edge.getText().equalsIgnoreCase("")){
-			return Double.parseDouble(p_edge.getText());
+	public double getP_edge_CC() {
+		if(!p_edge_CC.getText().equalsIgnoreCase("")){
+			return Double.parseDouble(p_edge_CC.getText());
 		}
 		
 		return 0.1;
 	}
 	
-	public void setP_edge(double p){
-		p_edge.setText(String.valueOf(p));
+	public void setP_edge_CC(double p){
+		p_edge_CC.setText(String.valueOf(p));
 	}
+	
+	public double getP_edge_CD() {
+		if(!p_edge_CD.getText().equalsIgnoreCase("")){
+			return Double.parseDouble(p_edge_CD.getText());
+		}
+		
+		return 0.1;
+	}
+	
+	public void setP_edge_CD(double p){
+		p_edge_CD.setText(String.valueOf(p));
+	}
+	
+	
 
 
 

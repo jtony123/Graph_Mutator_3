@@ -102,12 +102,12 @@ public class SimulatorUI extends Application {
 				//numNewPlayersNeeded = (modelCounter*10-5)%50;
 				numNewPlayersNeeded = controlBar.getNumPlayersPerModel();//65;
 				controlBar.setNumPlayersPerModel(numNewPlayersNeeded);
-				p_edge = controlBar.getP_edge();
+				p_edge = controlBar.getP_edge_CC();
 				//p_edge = (double)(((modelCounter+19)/20)*20)/(numModelsToBuild*10);
 				//p_edge = p_edges[((int)(double)(((modelCounter+9)/10)*10)/10)-1];//(double)(((modelCounter+19)/20)*20)/(numModelsToBuild*10);
 				//p_edge = (double)((((modelCounter+19))/20)*20)/(numModelsToBuild*2);
 				
-				controlBar.setP_edge(p_edge);				
+				controlBar.setP_edge_CC(p_edge);				
 				timeline = new Timeline();
 				timeline.setCycleCount(Timeline.INDEFINITE);
 				timeline.getKeyFrames().add(keyFrame);
@@ -215,7 +215,7 @@ public class SimulatorUI extends Application {
 						layout.execute(graph);
 						timeline.pause();
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -274,7 +274,7 @@ public class SimulatorUI extends Application {
 					//p_edge = (double)(((modelCounter+19)/20)*20)/(numModelsToBuild*10);
 					//p_edge = p_edges[((int)(double)(((modelCounter+9)/10)*10)/10)-1];
 					//p_edge = (double)((((modelCounter+19))/20)*20)/(numModelsToBuild*2);
-					controlBar.setP_edge(p_edge);
+					controlBar.setP_edge_CC(p_edge);
 					
 					playerNameSeed = 0;
 					numMutationsCounter = 0;
@@ -297,7 +297,7 @@ public class SimulatorUI extends Application {
 						graph.getModel().getDD_Percentage(), 
 						graph.getModel().getCD_Percentage());
 				controlBar.setModelNum(modelCounter);
-				controlBar.setNumMutations(numMutationsCounter);
+				controlBar.setNumEvolutions(numMutationsCounter);
 				if (simulationComplete) {
 					// outputEngine_1.shutCSVWriter();
 					timeline.stop();

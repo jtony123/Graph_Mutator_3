@@ -30,6 +30,13 @@ public class Player extends Pane {
 	public Player(String playerId) {
 		this.playerId = playerId;
 	}
+	
+	public void scaleUpPlayer(){
+		double x = this.shape.getScaleX();
+		this.shape.setScaleX(x+=0.2);
+		double y = this.shape.getScaleY();
+		this.shape.setScaleY(y+=0.2);
+	}
 
 	public void associateEdge(Edge edge){
 		edges.add(edge);

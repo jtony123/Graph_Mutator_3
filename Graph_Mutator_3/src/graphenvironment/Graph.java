@@ -84,6 +84,59 @@ public class Graph {
 
 	}   
 	
+	public void addPlayerToModel(int playerID, double p_edge_CC, double p_edge_CD) {
+
+		// Model model = graph.getModel();
+		// beginUpdate();
+		Player player = null;
+		double coinFlip = Math.random() * 2;
+		// double coinFlip = numNewPlayersNeeded%2;
+		// double coinFlip = numNewPlayersNeeded-modelCounter;
+		// if ((int) coinFlip < 0) {
+		if ((int) coinFlip == 0) {
+			player = new Cooperator(String.valueOf(playerID));
+			model.incrementNumCooperators();
+			model.addNewPlayer(player);
+			for (Player c : model.getAllPlayers()) {
+				double createEdge = Math.random();
+				// if both are coops
+				if (c instanceof Cooperator) {
+					if (createEdge < p_edge_CC) {
+						model.addEdge(player.getPlayerId(), c.getPlayerId());
+					}
+					// the other must be a defector
+				} else {
+					if (createEdge < p_edge_CD) {
+						model.addEdge(player.getPlayerId(), c.getPlayerId());
+					}
+				}
+
+			}
+
+		} else {
+			player = new Defector(String.valueOf(playerID));
+			model.incrementNumDefectors();
+			model.addNewPlayer(player);
+			for (Player c : model.getAllPlayers()) {
+				double createEdge = Math.random();
+				// if both are defectors
+				if (c instanceof Defector) {
+					if (createEdge < p_edge_CC) {
+						model.addEdge(player.getPlayerId(), c.getPlayerId());
+					}
+					// the other must be a cooperator
+				} else {
+					if (createEdge < p_edge_CD) {
+						model.addEdge(player.getPlayerId(), c.getPlayerId());
+					}
+				}
+			}
+		}
+		
+		endUpdate();
+	}
+	
+	
 	public void mutatePlayer(){
 		//Find the player to mutate ******queue holds only the defectors in descending order of edges,
 //		Player playerToMutate = null;
@@ -154,15 +207,8 @@ public class Graph {
         getPlayerLayer().getChildren().addAll(model.getAddedPlayers());
 
         // remove components from graph pane
-        getPlayerLayer().getChildren().removeAll(model.getRemovedPlayers());
+        //getPlayerLayer().getChildren().removeAll(model.getRemovedPlayers());
         getPlayerLayer().getChildren().removeAll(model.getRemovedEdges());
-
-     // enable dragging of players
-        for (Player player : model.getAddedPlayers()) {
-        	if(player != null){
-            mouseGestures.makeDraggable(player);
-        	}
-        }
         
         // every player must have a parent, if it doesn't, then the graphParent is
         // the parent
@@ -173,6 +219,8 @@ public class Graph {
 
         // merge added & removed players with all players
         getModel().merge();
+        
+        scrollPane.zoomToFit(false);
 
     }
 

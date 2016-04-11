@@ -24,6 +24,7 @@ public class Defector extends Player{
                
         shape.setStroke(Color.RED);
         shape.setFill(Color.RED);
+        
 
         setView( shape);
     }
